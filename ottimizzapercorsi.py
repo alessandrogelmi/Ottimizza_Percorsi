@@ -30,4 +30,3 @@ if response.status_code == 200:
         print("Autostrade: NO")
 else: 
     print(response.status_code)
-

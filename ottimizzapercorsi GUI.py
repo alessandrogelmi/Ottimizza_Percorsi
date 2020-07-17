@@ -9,38 +9,46 @@ root.title("Ottimizza percorsi")
 
 def getResult():
     text=entry.get("1.0", END)
-    if text=='\n' or text==None:
+    rows = text.count('\n')
+    if text=='\n' or rows!=2:    #\n equivale a "";  "1.0" leggi dalla riga 1 carattere 0
         messagebox.showerror(title="Errore", message="Errore, inserire almeno 2 località")
+        return -1
     else:
-        locations = text.splitlines()
-        payload = {'locations': locations}
-        response = requests.get('http://www.mapquestapi.com/directions/v2/optimizedroute?key=yourkey', json=payload)
-        result = response.json()
-
-        if response.status_code==200:
-            return result
+        if rows>25:
+            messagebox.showerror(title="Errore", message="Errore, massimo numero di località: 25")
+            return -1
         else:
-            return messagebox.showerror(title="Errore", message="Errore API")
+            locations = text.splitlines()
+            payload = {'locations': locations}
+            response = requests.get('http://www.mapquestapi.com/directions/v2/optimizedroute?key=yourkey', json=payload)
+            result = response.json()
+
+            if response.status_code==200:
+                return result
+            else:
+                return messagebox.showerror(title="Errore", message="Errore API")
 
 def ottimizza():
-    data = getResult()
-    j=1
-    for i in data['route']['locations']:
-        output.insert(END, f"#{str(j)} " + i['adminArea5'] + '\n')
-        j+=1
+    if getResult() != -1:
+        data = getResult()
+        j=1
+        for i in data['route']['locations']:
+            output.insert(END, f"#{str(j)} " + i['adminArea5'] + '\n')
+            j+=1
 
 def infoViaggio():
-    KM_TO_MILES = 0.62137 
-    info = getResult()
+    KM_TO_MILES = 0.62137
+    if getResult() != -1: 
+        info = getResult()
 
-    time = info['route']['formattedTime']
-    distance = round(((info['route']['distance'])/KM_TO_MILES),2)
-    if(info['route']['hasHighway']==True):
-        autostrade = "SI"
-    else:
-        autostrade = "NO"
+        time = info['route']['formattedTime']
+        distance = round(((info['route']['distance'])/KM_TO_MILES),2)
+        if(info['route']['hasHighway']==True):
+            autostrade = "SI"
+        else:
+            autostrade = "NO"
 
-    messagebox.showinfo(title="Info viaggio", message=f"Tempo percorrenza: {time} \nLunghezza totale percorso: {distance} km \nAutostrade: {autostrade}")    
+        messagebox.showinfo(title="Info viaggio", message=f"Tempo percorrenza: {time} \nLunghezza totale percorso: {distance} km \nAutostrade: {autostrade}")    
 
 foto = PhotoImage(file=r"C:\\Users\\Utente\\Documents\\Ottimizza distanza\\Icon\\info2.png")
 
