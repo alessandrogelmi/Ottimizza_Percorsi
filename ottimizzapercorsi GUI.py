@@ -1,10 +1,11 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import *
+import tkinter.scrolledtext as tkscrolled
 import requests
 
 root = Tk()
-root.geometry("415x535")
+root.geometry("430x535")
 root.title("Ottimizza percorsi")
 
 def getResult():
@@ -55,10 +56,10 @@ foto = PhotoImage(file=r"C:\\Users\\Utente\\Documents\\Ottimizza distanza\\Icon\
 #WIDGET
 enter = StringVar()
 l1 = Label(root, text="Inserisci le località seprandole andando a capo: ")
-entry = Text(root, width=50, height=12, wrap=WORD)
+entry = tkscrolled.ScrolledText(root, width=50, height=12, wrap=WORD)
 button = Button(root, text="Ottimizza", width=20)
 l2 = Label(root, text="Percorso ottimizzato:")
-output = Text(root, width=50, height=12, wrap=WORD)
+output = tkscrolled.ScrolledText(root, width=50, height=12, wrap=WORD)
 buttonInfo = Button(root, text="Info", image=foto)
 
 #POSITION
@@ -67,7 +68,7 @@ entry.grid(row=2, column=1, columnspan=2, padx=5, pady=(0,10))
 button.grid(row=3, column=1, columnspan=2, pady=5)
 l2.grid(row=4, column=1, padx=5, sticky=W)
 output.grid(row=5, column=1, columnspan=2, padx=5, pady=(0,10))
-buttonInfo.grid(row=6, column=1, columnspan=2, pady=5, padx=5, sticky=E)
+buttonInfo.grid(row=6, column=1, columnspan=2, pady=5, padx=10, sticky=E)
 
 #BUTTON COMMAND
 button.configure(command=ottimizza)
