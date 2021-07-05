@@ -13,7 +13,7 @@ if count >= 2 and count < 25:
     print(f"Località inserite: {locations}")
 
     payload = {'locations': locations}
-    response = requests.get('http://www.mapquestapi.com/directions/v2/optimizedroute?key=EI4ta9s2KdOG6re6R5qQWI56Sl608MFV', json=payload)
+    response = requests.get('yourkey', json=payload)
     result = response.json()
 
     if response.status_code == 200:
